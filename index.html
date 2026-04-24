@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👨‍👩‍👧‍👦 LA Trip — Kid Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e4e0d6;
+    --tue: #2563eb;
+    --tue-bg: #dbeafe;
+    --wed: #ca8a04;
+    --wed-bg: #fef9c3;
+    --thu: #059669;
+    --thu-bg: #d1fae5;
+    --pink: #db2777;
+    --pink-bg: #fce7f3;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 16px;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #552583 0%, #2563eb 100%);
+    color: white;
+    border-radius: 14px;
+    padding: 22px 20px;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.7em;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .subtitle { font-size: 0.95em; opacity: 0.92; }
+
+  .tab-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 8px;
+    border: 2px solid var(--border);
+    background: white;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88em;
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+    color: var(--text);
+  }
+  .tab-btn .day-num {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25em;
+    font-weight: 900;
+  }
+  .tab-btn.active.tue { border-color: var(--tue); background: var(--tue-bg); color: var(--tue); }
+  .tab-btn.active.wed { border-color: var(--wed); background: var(--wed-bg); color: var(--wed); }
+  .tab-btn.active.thu { border-color: var(--thu); background: var(--thu-bg); color: var(--thu); }
+  .tab-btn.active.people { border-color: var(--pink); background: var(--pink-bg); color: var(--pink); }
+  .tab-btn.active.emergency { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+
+  .pane { display: none; }
+  .pane.active { display: block; }
+
+  .day-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 18px 18px 6px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--border);
+  }
+  .day-card.tue { border-left-color: var(--tue); }
+  .day-card.wed { border-left-color: var(--wed); }
+  .day-card.thu { border-left-color: var(--thu); }
+  .day-card h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15em;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin-left: 0;
+    border-left: none;
+  }
+  .timeline li {
+    position: relative;
+    padding: 8px 0 10px 112px;
+    min-height: 36px;
+  }
+  .timeline li .when {
+    display: inline-block;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 0.85em;
+    margin-right: 6px;
+  }
+  .timeline li .what {
+    display: inline;
+    font-size: 0.92em;
+    line-height: 1.4;
+  }
+  .timeline li .note {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.82em;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .timeline li:last-child { padding-bottom: 4px; }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: 84px;
+    top: 16px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--muted);
+    border: 2px solid white;
+    z-index: 2;
+  }
+  .timeline li::after {
+    content: "";
+    position: absolute;
+    left: 89px;
+    top: 24px;
+    bottom: -8px;
+    width: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .timeline li:last-child::after { display: none; }
+  .timeline li .person-label {
+    position: absolute;
+    left: 0;
+    top: 15px;
+    width: 74px;
+    font-size: 0.78em;
+    font-weight: 700;
+    text-align: right;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+  .timeline li .person-label:empty { display: none; }
+  .timeline li[data-person="jen"] .person-label { color: #0891b2; }
+  .timeline li[data-person="jennifer"] .person-label { color: #7c3aed; }
+  .timeline li[data-person="cece"] .person-label { color: #db2777; }
+  .timeline li[data-person="meg"] .person-label { color: #d97706; }
+  .timeline li[data-person="isa"] .person-label { color: #059669; }
+  .timeline li[data-person="bobby"] .person-label { color: #2563eb; }
+  .timeline li[data-person="camila"] .person-label { color: #65a30d; }
+  .timeline li[data-person="parents"] .person-label { color: #6b7280; }
+
+  .timeline li.key::before { background: var(--tue); width: 14px; height: 14px; left: -8px; }
+  .timeline li.warning::before { background: var(--red); width: 14px; height: 14px; left: -8px; }
+
+  /* Person-colored timeline dots */
+  .timeline li[data-person="jen"]::before { background: #0891b2; }
+  .timeline li[data-person="jennifer"]::before { background: #7c3aed; }
+  .timeline li[data-person="cece"]::before { background: #db2777; }
+  .timeline li[data-person="meg"]::before { background: #d97706; }
+  .timeline li[data-person="isa"]::before { background: #059669; }
+  .timeline li[data-person="bobby"]::before { background: #2563eb; }
+  .timeline li[data-person="katie"]::before { background: #ea580c; }
+    .timeline li[data-person="camila"]::before { background: #65a30d; }
+  .timeline li[data-person="naomi"]::before { background: #0d9488; }
+  .timeline li[data-person="naomi"] .person-label { color: #0d9488; }
+  .legend-chip[data-p="naomi"]::before { background: #0d9488; }
+  .timeline li[data-person="parents"]::before { background: #6b7280; width: 14px; height: 14px; left: 83px; top: 15px; }
+  .timeline li[data-person="parents"] { font-weight: 600; }
+
+  .who-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .legend-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78em;
+    font-weight: 600;
+    padding: 3px 10px 3px 8px;
+    border-radius: 12px;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .legend-chip::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .legend-chip[data-p="jen"]::before { background: #0891b2; }
+  .legend-chip[data-p="jennifer"]::before { background: #7c3aed; }
+  .legend-chip[data-p="cece"]::before { background: #db2777; }
+  .legend-chip[data-p="meg"]::before { background: #d97706; }
+  .legend-chip[data-p="isa"]::before { background: #059669; }
+  .legend-chip[data-p="bobby"]::before { background: #2563eb; }
+  .legend-chip[data-p="katie"]::before { background: #ea580c; }
+  .legend-chip[data-p="camila"]::before { background: #65a30d; }
+  .legend-chip[data-p="parents"]::before { background: #6b7280; }
+
+  .timeline .when {
+    font-weight: 800;
+    font-size: 0.88em;
+    color: var(--muted);
+    display: block;
+  }
+  .timeline .what {
+    font-size: 0.96em;
+    margin-top: 2px;
+  }
+  .timeline .who {
+    display: inline-block;
+    font-size: 0.78em;
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 8px;
+    margin-left: 6px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .timeline .note {
+    font-size: 0.85em;
+    color: var(--muted);
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .people-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    border-top: 4px solid var(--pink);
+  }
+  .people-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1em;
+    margin-bottom: 6px;
+    color: var(--pink);
+  }
+  .people-card .role {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .people-card .duties {
+    list-style: none;
+    padding-left: 0;
+  }
+  .people-card .duties li {
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.93em;
+  }
+  .people-card .duties li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--pink);
+    font-weight: 700;
+  }
+  .people-card .pay {
+    margin-top: 10px;
+    padding: 6px 10px;
+    background: var(--pink-bg);
+    border-radius: 8px;
+    font-size: 0.85em;
+    color: var(--pink);
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .emergency-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--red);
+  }
+  .emergency-card h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    margin-bottom: 8px;
+    color: var(--red);
+  }
+  .emergency-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 0.92em;
+  }
+  .emergency-row .label { color: var(--muted); font-weight: 600; }
+  .emergency-row .value { font-weight: 500; }
+  .emergency-row .value a { color: var(--tue); text-decoration: none; font-weight: 600; }
+
+  .kid-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .kid {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .kid .emoji { font-size: 1.6em; }
+  .kid .name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95em;
+    margin-top: 2px;
+  }
+  .kid .school {
+    font-size: 0.75em;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .kid-phone {
+    font-size: 0.78em;
+    margin-top: 4px;
+  }
+  .kid-phone a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .kid-activities {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+    text-align: left;
+    display: inline-block;
+  }
+  .kid-activities li {
+    font-size: 0.75em;
+    color: var(--text);
+    padding: 2px 0;
+    line-height: 1.3;
+  }
+
+  .callout {
+    background: #fff7ed;
+    border-left: 4px solid #ea580c;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    margin: 10px 0;
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.4em; }
+    .tab-btn { font-size: 0.78em; }
+    .emergency-row { grid-template-columns: 90px 1fr; font-size: 0.85em; }
+  }
+
+  .timeline a, .day-card a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    font-weight: 600;
+  }
+  .timeline a:active, .day-card a:active { opacity: 0.7; }
+
+  .contact-placeholder {
+    font-size: 0.8em;
+    color: var(--muted);
+    font-style: italic;
+    margin: 4px 0 8px;
+    padding: 4px 8px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .contact-row {
+    font-size: 0.88em;
+    margin: 4px 0 8px;
+    padding: 6px 10px;
+    background: #eff6ff;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .contact-row a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .pre-trip-note {
+    background: #fef3c7;
+    border-left: 3px solid #f59e0b;
+    color: #78350f;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.88em;
+    margin-bottom: 14px;
+  }
+  .role-note { color: var(--muted); font-weight: normal; font-size: 0.85em; }
+
+  @media print {
+    .tab-nav { display: none !important; }
+    .pane { display: block !important; page-break-after: always; }
+    .pane:last-child { page-break-after: auto; }
+    .day-card, .people-card, .emergency-card { break-inside: avoid; }
+    body { background: white; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>👨‍👩‍👧‍👦 Kid Coverage — LA Trip</h1>
+    <div class="subtitle">Apr 28-30, 2026 · While Liz + Bobby are in LA</div>
+  </header>
+
+  <!-- Kid strip -->
+  <div class="kid-strip">
+    <div class="kid">
+      <div class="emoji">👧</div>
+      <div class="name">Annabelle (14)</div>
+      <div class="school">ABMS · pickup 3:00 pm</div>
+      <div class="kid-phone"><a href="tel:+19132038490">📱 913-203-8490</a></div>
+      <ul class="kid-activities">
+        <li>Tue · Jen 3:30</li>
+        <li>Wed · Wolf Pups 6:00</li>
+        <li>Thu · Jen 4:15</li>
+      </ul>
+    </div>
+    <div class="kid">
+      <div class="emoji">👧</div>
+      <div class="name">Adalyn (8)</div>
+      <div class="school">Wolf Springs · 3:30 pm</div>
+      <ul class="kid-activities">
+        <li>Tue · Girl Scouts 3:30</li>
+        <li>Tue · Jen 5:30</li>
+        <li>Wed · Swim 5:30</li>
+        <li>Thu · Jen 5:30</li>
+        <li>📖 Kumon HW daily</li>
+      </ul>
+    </div>
+    <div class="kid">
+      <div class="emoji">👦</div>
+      <div class="name">Andrew (5)</div>
+      <div class="school">Primrose · ~3:45 pm</div>
+      <ul class="kid-activities">
+        <li>Tue · Jen 4:30</li>
+        <li>Wed · Swim 5:00</li>
+        <li>Thu · Jen 5:30</li>
+        <li>📖 Kumon HW daily</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tab Nav -->
+  <div class="tab-nav">
+    <button class="tab-btn tue active" onclick="show('tue')"><span class="day-num">Tue</span>Apr 28</button>
+    <button class="tab-btn wed" onclick="show('wed')"><span class="day-num">Wed</span>Apr 29</button>
+    <button class="tab-btn thu" onclick="show('thu')"><span class="day-num">Thu</span>Apr 30</button>
+    <button class="tab-btn people" onclick="show('people')"><span class="day-num">👥</span>Who's helping</button>
+    <button class="tab-btn emergency" onclick="show('emergency')"><span class="day-num">🚨</span>Emergency</button>
+  </div>
+
+  <!-- TUE -->
+  <div class="pane active" id="pane-tue">
+    <div class="day-card tue">
+      <h2>🗓️ Tuesday Apr 28</h2>
+      <div class="pre-trip-note">☀️ <strong>Sunday 4/26:</strong> CeCe comes over to visit + go over everything with Liz and the kids</div>
+      <div class="who-legend">
+        <span class="legend-chip" data-p="jen">Jen</span>
+        <span class="legend-chip" data-p="bobby">Bobby</span>
+        <span class="legend-chip" data-p="cece">CeCe</span>
+        <span class="legend-chip" data-p="camila">Florency</span>
+        <span class="legend-chip" data-p="meg">Meg</span>
+        <span class="legend-chip" data-p="parents">Liz + Bobby</span>
+      </div>
+      <ul class="timeline">
+        <li data-person="bobby"><span class="person-label">Bobby</span>
+          <span class="when">3:00 pm</span>
+          <div class="what">Picks up Annabelle from <a href="https://www.google.com/maps/search/?api=1&query=Aubrey+Bend+Middle+School+Overland+Park+KS" target="_blank">ABMS</a></div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">3:30 pm</span>
+          <div class="what">🏋️ Annabelle workout (3:30-4:30 pm)</div>
+        </li>
+        <li><span class="person-label"></span>
+          <span class="when">3:30 pm</span>
+          <div class="what">🍪 Adalyn stays at school for Girl Scouts (3:30-5:00 pm)</div>
+        </li>
+        <li data-person="bobby"><span class="person-label">Bobby</span>
+          <span class="when">~3:45 pm</span>
+          <div class="what">Picks up Andrew from <a href="https://www.google.com/maps/search/?api=1&query=Primrose+School+of+Blue+Valley+Overland+Park+KS" target="_blank">Primrose</a></div>
+          <div class="note">Bobby picks up on his way home before the flight</div>
+        </li>
+        
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">4:30-5:30 pm</span>
+          <div class="what">🏋️ Andrew's workout</div>
+        </li>
+        <li data-person="parents"><span class="person-label">Liz + Bobby</span>
+          <span class="when">4:45 pm</span>
+          <div class="what">🛫 Liz + Bobby leave for airport</div>
+        </li>
+        <li data-person="camila"><span class="person-label">Florency</span>
+          <span class="when">~5:00 pm</span>
+          <div class="what">Adalyn ride home from Girl Scouts</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">5:30-6:30 pm</span>
+          <div class="what">🏋️ Adalyn's workout</div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">~5:45 pm</span>
+          <div class="what">CeCe arrives <em>(ETA pending)</em></div>
+          <div class="note">Briefing already done Sunday 4/26 — she knows the routine</div>
+        </li>
+        <li data-person="meg"><span class="person-label">Meg</span>
+          <span class="when">~6:00 pm</span>
+          <div class="what">🍽️ Drops off dinner</div>
+        </li>
+        <li data-person="parents"><span class="person-label">Liz + Bobby</span>
+          <span class="when">7:00 pm</span>
+          <div class="what">🛫 Liz + Bobby flight MCI → LAX</div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">evening</span>
+          <div class="what">Bedtime routine + overnight</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WED -->
+  <div class="pane" id="pane-wed">
+    <div class="day-card wed">
+      <h2>🗓️ Wednesday Apr 29</h2>
+      <div class="who-legend">
+        <span class="legend-chip" data-p="isa">Isa</span>
+        <span class="legend-chip" data-p="cece">CeCe</span>
+        <span class="legend-chip" data-p="jennifer">Jennifer</span>
+        <span class="legend-chip" data-p="naomi">Naomi fam</span>
+      </div>
+      <ul class="timeline">
+        <li data-person="isa"><span class="person-label">Isa</span>
+          <span class="when">7:00 am</span>
+          <div class="what">Arrives at house</div>
+          <div class="note">Stays with Adalyn + Andrew while CeCe does Annabelle drop-off, then does her normal workflow all day</div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">7:15 am</span>
+          <div class="what">Drives Annabelle to <a href="https://www.google.com/maps/search/?api=1&query=Aubrey+Bend+Middle+School+Overland+Park+KS" target="_blank">ABMS</a></div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">8:10-8:40 am</span>
+          <div class="what">Drops off Adalyn + Andrew</div>
+          <div class="note">CeCe is free for the day — can use the house if needed</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">3:00 pm</span>
+          <div class="what">Picks up Annabelle (<a href="https://www.google.com/maps/search/?api=1&query=Aubrey+Bend+Middle+School+Overland+Park+KS" target="_blank">ABMS</a>)</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">3:30 pm</span>
+          <div class="what">Picks up Adalyn (<a href="https://www.google.com/maps/search/?api=1&query=Wolf+Springs+Elementary+Olathe+KS" target="_blank">Wolf Springs</a>)</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">~3:45 pm</span>
+          <div class="what">Picks up Andrew (<a href="https://www.google.com/maps/search/?api=1&query=Primrose+School+of+Blue+Valley+Overland+Park+KS" target="_blank">Primrose</a>)</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">~4:05 pm</span>
+          <div class="what">🏠 Home with all 3 kids — Adalyn + Andrew change into swimsuits, Annabelle stays for basketball</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">4:40 pm</span>
+          <div class="what">🚗 Leave for swim @ <a href="https://www.google.com/maps/search/?api=1&query=Midwest+Aquatics+Overland+Park+KS" target="_blank">Midwest Aquatics</a> with Adalyn + Andrew</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">5:00-5:30 pm</span>
+          <div class="what">🏊 Andrew's swim @ <a href="https://www.google.com/maps/search/?api=1&query=Midwest+Aquatics+Overland+Park+KS" target="_blank">Midwest Aquatics</a></div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">5:30-6:00 pm</span>
+          <div class="what">🏊 Adalyn's swim @ <a href="https://www.google.com/maps/search/?api=1&query=Midwest+Aquatics+Overland+Park+KS" target="_blank">Midwest Aquatics</a></div>
+          
+        </li>
+        <li data-person="naomi"><span class="person-label">Naomi fam</span>
+          <span class="when">~5:45 pm</span>
+          <div class="what">🏀 Picks up Annabelle from home for Wolf Pups basketball @ <a href="https://www.google.com/maps/search/?api=1&query=Blue+Valley+Southwest+High+School+Overland+Park+KS" target="_blank">Blue Valley Southwest</a></div>
+        </li>
+        <li data-person="naomi"><span class="person-label">Annabelle</span>
+          <span class="when">6:00-7:30 pm</span>
+          <div class="what">🏀 Wolf Pups basketball @ Blue Valley Southwest</div>
+        </li>
+        <li data-person="jennifer"><span class="person-label">Jennifer</span>
+          <span class="when">~6:15 pm</span>
+          <div class="what">🌯 <a href="https://www.google.com/maps/search/?api=1&query=Costa+Vida+Overland+Park+KS" target="_blank">Costa Vida</a> for dinner (dine in) + takeout for Annabelle</div>
+          <div class="note">📝 Annabelle's order: Salad · Grilled Steak · Flour Tortilla · Cilantro Lime Rice · Pico de Gallo · Black Beans · <strong>NO dressing · NO tortilla strips</strong></div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">~7:00 pm</span>
+          <div class="what">CeCe at the house, ready for the kids to get home</div>
+        </li>
+        <li data-person="naomi"><span class="person-label">Naomi fam</span>
+          <span class="when">~7:30 pm</span>
+          <div class="what">🏠 Drops Annabelle back home</div>
+        </li>
+        
+        
+        
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">overnight</span>
+          <div class="what">Stays overnight again</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THU -->
+  <div class="pane" id="pane-thu">
+    <div class="day-card thu">
+      <h2>🗓️ Thursday Apr 30</h2>
+      <div class="who-legend">
+        <span class="legend-chip" data-p="isa">Isa</span>
+        <span class="legend-chip" data-p="cece">CeCe</span>
+        <span class="legend-chip" data-p="jen">Jen</span>
+        <span class="legend-chip" data-p="meg">Meg</span>
+        <span class="legend-chip" data-p="parents">Liz + Bobby</span>
+      </div>
+      <ul class="timeline">
+        <li data-person="isa"><span class="person-label">Isa</span>
+          <span class="when">7:00 am</span>
+          <div class="what">Arrives</div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">7:15 am</span>
+          <div class="what">Drives Annabelle to <a href="https://www.google.com/maps/search/?api=1&query=Aubrey+Bend+Middle+School+Overland+Park+KS" target="_blank">ABMS</a></div>
+        </li>
+        <li data-person="cece"><span class="person-label">CeCe</span>
+          <span class="when">8:10-8:40 am</span>
+          <div class="what">Drops off Adalyn + Andrew</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">3:00 pm</span>
+          <div class="what">Picks up Annabelle (<a href="https://www.google.com/maps/search/?api=1&query=Aubrey+Bend+Middle+School+Overland+Park+KS" target="_blank">ABMS</a>)</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">3:30 pm</span>
+          <div class="what">Picks up Adalyn (<a href="https://www.google.com/maps/search/?api=1&query=Wolf+Springs+Elementary+Olathe+KS" target="_blank">Wolf Springs</a>)</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">~3:45 pm</span>
+          <div class="what">Picks up Andrew (<a href="https://www.google.com/maps/search/?api=1&query=Primrose+School+of+Blue+Valley+Overland+Park+KS" target="_blank">Primrose</a>)</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">4:15-5:30 pm</span>
+          <div class="what">🏋️ Annabelle's workout</div>
+        </li>
+        <li data-person="jen"><span class="person-label">Jen</span>
+          <span class="when">5:30-7:00 pm</span>
+          <div class="what">🏋️ Adalyn + Andrew workouts</div>
+        </li>
+        <li data-person="meg"><span class="person-label">Meg</span>
+          <span class="when">~6:00 pm</span>
+          <div class="what">🛒 Picks up dinner</div>
+        </li>
+        <li data-person="meg"><span class="person-label">Meg</span>
+          <span class="when">~7:00 pm</span>
+          <div class="what">🍽️ Dinner with kids at the house</div>
+        </li>
+        <li data-person="meg"><span class="person-label">Meg</span>
+          <span class="when">after dinner</span>
+          <div class="what">Bedtime + stays late</div>
+          <div class="note">Meg stays until Liz + Bobby home (~midnight). If she can't, CeCe again overnight.</div>
+        </li>
+        <li data-person="parents"><span class="person-label">Liz + Bobby</span>
+          <span class="when">10:50 pm CDT</span>
+          <div class="what">🛬 Liz + Bobby land MCI</div>
+        </li>
+        <li data-person="parents"><span class="person-label">Liz + Bobby</span>
+          <span class="when">~11:30 pm - midnight</span>
+          <div class="what">🏠 Home</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PEOPLE -->
+  <div class="pane" id="pane-people">
+    <div class="people-card">
+      <h3>Jen Hersh</h3>
+      <div class="role">Tue + Thu workouts</div>
+      <div class="contact-row"><a href="tel:+19133787784">📞 913-378-7784</a> · <a href="sms:+19133787784">💬 text</a></div>
+      <ul class="duties">
+        <li>Tue 3:30-6:30 pm — workouts with Annabelle, Andrew, Adalyn</li>
+        <li>Thu 3:00 pm — pickups at all 3 schools</li>
+        <li>Thu 4:15-7:00 pm — workouts with all 3 kids</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>Jennifer Fitzgerald</h3>
+      <div class="role">Wednesday afternoon + evening</div>
+      <div class="contact-row"><a href="tel:+13166165592">📞 316-616-5592</a> · <a href="sms:+13166165592">💬 text</a></div>
+      <ul class="duties">
+        <li>Wed 3:00 pm — pickups at all 3 schools</li>
+        <li>Wed ~4:05 pm — home with kids; Annabelle stays for basketball</li>
+        <li>Wed 4:40 pm — leave for swim with Adalyn + Andrew</li>
+        <li>Wed 5:00-6:00 pm — swim @ Midwest Aquatics</li>
+        <li>Wed ~6:15 pm — Costa Vida dinner + takeout for Annabelle</li>
+        <li>Wed ~7:00 pm — home, hand off to CeCe</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>CeCe Richardson</h3>
+      <div class="role">Overnight anchor Tue + Wed nights</div>
+      <div class="contact-row"><a href="tel:+12314098824">📞 231-409-8824</a> · <a href="sms:+12314098824">💬 text</a></div>
+      <ul class="duties">
+        <li>Sun 4/26 — visit with Liz + kids for briefing</li>
+        <li>Tue ~5:45 pm — arrive (ETA pending)</li>
+        <li>Tue evening — bedtime + overnight</li>
+        <li>Wed 7:15 am — take Annabelle to ABMS</li>
+        <li>Wed 8:10-8:40 am — take Adalyn + Andrew to school</li>
+        <li>Wed daytime — free (house as home base if needed)</li>
+        <li>Wed 7:00 pm — back at the house, bedtime + overnight</li>
+        <li>Thu 7:15 am — take Annabelle to ABMS</li>
+        <li>Thu 8:10-8:40 am — take Adalyn + Andrew</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>Meg Petty</h3>
+      <div class="role">Tue dinner + Thu evening/late night</div>
+      <div class="contact-row"><a href="tel:+19139528403">📞 913-952-8403</a> · <a href="sms:+19139528403">💬 text</a></div>
+      <ul class="duties">
+        <li>Tue ~6:00 pm — drops off dinner at the house</li>
+        <li>Thu ~6:00 pm — picks up dinner</li>
+        <li>Thu ~7:00 pm — dinner with kids at the house</li>
+        <li>Thu after dinner — bedtime + stay until Liz + Bobby home (~midnight)</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>Isa Counts</h3>
+      <div class="role">Wed + Thu 7:00 am – 3:00 pm <span class="role-note">(normally 8–4)</span></div>
+      <div class="contact-placeholder">📞 Contact info — to add</div>
+      <ul class="duties">
+        <li>Wed 7:00 am — arrive; with Adalyn + Andrew while CeCe takes Annabelle to ABMS</li>
+        <li>Wed 7:00 am – 3:00 pm — normal workflow</li>
+        <li>Thu 7:00 am – 3:00 pm — same schedule</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>Florency Winslow</h3>
+      <div class="role">Camilla's mom · Tue ride</div>
+      <div class="contact-row"><a href="tel:+18165475086">📞 816-547-5086</a> · <a href="sms:+18165475086">💬 text</a></div>
+      <ul class="duties">
+        <li>Tue ~5:00 pm — drops Adalyn home after Girl Scouts</li>
+      </ul>
+    </div>
+
+    <div class="people-card">
+      <h3>Naomi family</h3>
+      <div class="role">Wed basketball ride</div>
+      <div class="contact-placeholder">📞 Contact info — to add</div>
+      <ul class="duties">
+        <li>Wed ~5:45 pm — pick up Annabelle for Wolf Pups basketball</li>
+        <li>Wed 6:00-7:30 pm — Wolf Pups @ Blue Valley Southwest</li>
+        <li>Wed ~7:30 pm — drop Annabelle back home</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EMERGENCY -->
+  <div class="pane" id="pane-emergency">
+    <div class="emergency-card">
+      <h3>📞 Parents</h3>
+      <div class="emergency-row"><div class="label">Annabelle</div><div class="value"><a href="tel:+19132038490">913-203-8490</a></div></div>
+      <div class="emergency-row"><div class="label">Liz cell</div><div class="value"><a href="tel:+19132175171">913-217-5171</a></div></div>
+      <div class="emergency-row"><div class="label">Bobby cell</div><div class="value"><a href="tel:+19132175172">913-217-5172</a></div></div>
+      <div class="emergency-row"><div class="label">Melissa Martinez</div><div class="value">Liz's sister · <a href="tel:+18163926183">816-392-6183</a></div></div>
+      <div class="emergency-row"><div class="label">Makayla Martinez</div><div class="value">Liz's niece · <a href="tel:+19134908961">913-490-8961</a></div></div>
+      <div class="emergency-row"><div class="label">Time zone</div><div class="value">LA is 2 hrs behind KC (PT)</div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>🏨 Where we're staying</h3>
+      <div class="emergency-row"><div class="label">Hotel</div><div class="value"><a href="https://www.google.com/maps/search/?api=1&query=Conrad+Los+Angeles" target="_blank">Conrad Los Angeles</a></div></div>
+      <div class="emergency-row"><div class="label">Hotel phone</div><div class="value"><a href="tel:+12137682888">213-768-2888</a></div></div>
+      <div class="emergency-row"><div class="label">Check-in</div><div class="value">Tue 4/28 • Check-out Thu 4/30</div></div>
+      <div class="emergency-row"><div class="label">Confirmation</div><div class="value">#3458524795</div></div>
+      <div class="emergency-row"><div class="label">Under</div><div class="value">Robert Zhou</div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>🏥 Kids' doctor</h3>
+      <div class="emergency-row"><div class="label">Dr. Vannaman</div><div class="value">Health Suite 110</div></div>
+      <div class="emergency-row"><div class="label">Clinic</div><div class="value"><a href="tel:+19139487652">913-948-7652</a></div></div>
+      <div class="emergency-row"><div class="label">After hours</div><div class="value"><a href="tel:+19133254410">913-325-4410</a></div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>🏫 Schools</h3>
+      <div class="emergency-row"><div class="label">ABMS (Annabelle)</div><div class="value"><a href="tel:+19132397500">913-239-7500</a></div></div>
+      <div class="emergency-row"><div class="label">Wolf Springs (Adalyn)</div><div class="value"><a href="tel:+19132392500">913-239-2500</a></div></div>
+      <div class="emergency-row"><div class="label">Primrose (Andrew)</div><div class="value"><a href="tel:+19138853700">913-885-3700</a></div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>💊 Kid specifics</h3>
+      <div class="emergency-row"><div class="label">Andrew</div><div class="value">Needs booster seat. Check with helpers.</div></div>
+      <div class="emergency-row"><div class="label">Allergies</div><div class="value">All 3 kids have seasonal allergies — can take kids' allergy medicine as needed</div></div>
+      <div class="emergency-row"><div class="label">Dairy</div><div class="value">All 3 kids have dairy sensitivity</div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>🏡 Neighbors (backup)</h3>
+      <div class="emergency-row"><div class="label">Amber Sim</div><div class="value"><a href="tel:+18163028090">816-302-8090</a></div></div>
+      <div class="emergency-row"><div class="label">Thuy Nguyen</div><div class="value"><a href="tel:+19137090139">913-709-0139</a></div></div>
+      <div class="emergency-row"><div class="label">Jessica Giffin</div><div class="value">White house, N of Madison house · phone TBD</div></div>
+      <div class="emergency-row"><div class="label">Stephani Tyrance</div><div class="value">S of Madison house · <a href="tel:+13362638857">336-263-8857</a></div></div>
+      <div class="emergency-row"><div class="label">Sherrin George</div><div class="value">N of Barton house · <a href="tel:+19135263345">913-526-3345</a></div></div>
+    </div>
+
+    <div class="emergency-card">
+      <h3>🔑 Backup chain</h3>
+      <div class="emergency-row"><div class="label">Overnight backup</div><div class="value">CeCe or Jennifer Fitzgerald (both offered to stay if needed)</div></div>
+      <div class="emergency-row"><div class="label">If kid gets sick</div><div class="value">Meg picks up from school. Isa can stay home with sick kid if needed.</div></div>
+      <div class="emergency-row"><div class="label">Neighborhood help</div><div class="value">Amber (Asher's mom), Thuy (Tyler's mom)</div></div>
+    </div>
+
+    <div class="callout">
+      <strong>💡 Remember:</strong> Add all helpers to school pickup lists ahead of time. Leave insurance card copy + notarized medical consent on kitchen counter.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function show(which) {
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('pane-' + which).classList.add('active');
+    document.querySelector('.tab-btn.' + which).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
