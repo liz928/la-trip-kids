@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏡 Cece's Handbook · Zhou Kids</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #6b4d7a;
+    --plum-light: #8a6a9b;
+    --rose: #c97b8e;
+    --gold: #d4a64a;
+    --green: #4a7c59;
+    --teal: #4d8a8a;
+    --cream: #faf7f1;
+    --warm: #f4ede0;
+    --ink: #2a2a2a;
+    --muted: #6b6b6b;
+    --rail: #efe9dc;
+    --annabelle: #c084fc;  /* purple */
+    --adalyn: #f472b6;     /* pink */
+    --andrew: #fb923c;     /* orange */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.55;
+    padding: 16px;
+  }
+  .container { max-width: 820px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, var(--plum) 0%, var(--plum-light) 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 24px 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 24px rgba(107,77,122,0.18);
+  }
+  h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.85em;
+    font-weight: 900;
+  }
+  .subtitle { font-size: 1em; opacity: 0.92; margin-top: 4px; }
+  .when-pill {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 14px;
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 0.9em;
+  }
+
+  /* Quick nav */
+  .quicknav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .quicknav a {
+    flex: 1 1 calc(50% - 4px);
+    background: white;
+    color: var(--plum);
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.92em;
+    font-weight: 600;
+    border: 1px solid var(--rail);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .quicknav a:active { background: var(--warm); }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 5px solid var(--plum);
+  }
+  .card.morning { border-left-color: var(--gold); background: #fdf6e3; }
+  .card.evening { border-left-color: var(--teal); background: #e8f3f3; }
+  .card.medical { border-left-color: #c0524a; background: #fff4f3; }
+  .card.house { border-left-color: var(--green); background: #e9f3eb; }
+  .card.dinner { border-left-color: var(--rose); background: #fdf2f8; }
+
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    color: var(--plum);
+    font-size: 1.3em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .card.morning h2 { color: #b58a2c; }
+  .card.evening h2 { color: var(--teal); }
+  .card.medical h2 { color: #c0524a; }
+  .card.house h2 { color: var(--green); }
+  .card.dinner h2 { color: var(--rose); }
+
+  h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.08em;
+    margin: 14px 0 6px;
+  }
+
+  .step {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rail);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--plum);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85em;
+  }
+  .morning .step-num { background: var(--gold); }
+  .evening .step-num { background: var(--teal); }
+  .step-body { flex: 1; }
+  .step-time {
+    font-weight: 700;
+    color: var(--plum);
+    font-size: 0.95em;
+  }
+  .step-text { font-size: 0.97em; }
+  .step-detail {
+    font-size: 0.88em;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .kid {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.82em;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .kid.annabelle { background: var(--annabelle); color: white; }
+  .kid.adalyn { background: var(--adalyn); color: white; }
+  .kid.andrew { background: var(--andrew); color: white; }
+
+  details {
+    background: white;
+    border: 1px solid var(--rail);
+    border-radius: 10px;
+    margin: 8px 0;
+    overflow: hidden;
+  }
+  details summary {
+    padding: 12px 14px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--plum);
+    list-style: none;
+    background: var(--warm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: '▶'; font-size: 0.7em; transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(90deg); }
+  details .det-body { padding: 12px 14px; font-size: 0.94em; line-height: 1.6; }
+
+  .order-card {
+    background: white;
+    border-radius: 10px;
+    padding: 14px;
+    margin: 8px 0;
+    border-left: 4px solid var(--rose);
+  }
+  .order-card.annabelle { border-left-color: var(--annabelle); }
+  .order-card.adalyn { border-left-color: var(--adalyn); }
+  .order-card.andrew { border-left-color: var(--andrew); }
+  .order-card.cece { border-left-color: var(--plum); }
+  .order-card h4 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    margin-bottom: 6px;
+  }
+  .order-card ul {
+    margin-left: 18px;
+    font-size: 0.93em;
+    line-height: 1.6;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .photo-grid img {
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .photo-grid figure { margin: 0; }
+  .photo-grid figcaption {
+    font-size: 0.8em;
+    color: var(--muted);
+    margin-top: 3px;
+    text-align: center;
+  }
+
+  .callout {
+    background: #fff4f3;
+    border: 2px solid #c0524a;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 0.94em;
+  }
+  .callout strong { color: #c0524a; }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--rail);
+    font-size: 0.94em;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .lbl { color: var(--muted); }
+  .info-row .val { font-weight: 600; }
+
+  .btn-link {
+    display: inline-block;
+    background: var(--plum);
+    color: white;
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.92em;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85em;
+    margin-top: 24px;
+    padding: 20px 0;
+  }
+
+  @media (min-width: 720px) {
+    .photo-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🏡 Cece's Handbook</h1>
+    <div class="subtitle">In-the-house guide · Annabelle, Adalyn, Andrew</div>
+    <div class="when-pill">Tue Apr 28 (PM) → Fri May 1 (AM)</div>
+  </header>
+
+  <!-- Quick navigation -->
+  <div class="quicknav">
+    <a href="#morning">🌅 Morning</a>
+    <a href="#lunch">🍱 Lunch prep</a>
+    <a href="#evening">🌙 Evening + bedtime</a>
+    <a href="#dinner">🍽️ Dinner orders</a>
+    <a href="#wed">💧 Wed swim</a>
+    <a href="#house">🏠 House info</a>
+    <a href="la-trip-kids.html" target="_blank">📋 Full kid coverage</a>
+    <a href="#contacts">📞 Contacts</a>
+  </div>
+
+  <!-- ARRIVAL NIGHT -->
+  <div class="card">
+    <h2>🌃 Tonight (Tue Apr 28)</h2>
+    <p>Kids are with <strong>Jen</strong> until you arrive around <strong>5:30 PM</strong>.</p>
+    <p style="margin-top:10px;"><strong>Meg</strong> is grabbing <strong>Cava</strong> for the family — your bowl is included (see <a href="#dinner">dinner orders</a> below).</p>
+    <p style="margin-top:10px;">Once kids are home and dinner is done, follow the <a href="#evening">evening + bedtime routine</a>.</p>
+  </div>
+
+  <!-- MORNING ROUTINE -->
+  <div class="card morning" id="morning">
+    <h2>🌅 Morning Routine</h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-time">7:20 AM</div>
+        <div class="step-text"><span class="kid annabelle">Annabelle</span> drop-off at <strong><a href="https://www.google.com/maps/search/?api=1&query=Aubry+Bend+Middle+School+Overland+Park+KS" target="_blank">Aubry Bend Middle School (ABMS)</a></strong></div>
+        <div class="step-detail">Then come back to the house for the little kids.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-time">After Annabelle drop-off</div>
+        <div class="step-text">Make breakfast for <span class="kid adalyn">Adalyn</span> + <span class="kid andrew">Andrew</span></div>
+        <div class="step-detail">Options: overnight oats, avocado toast, fruit, etc. <a href="#lunch">See breakfast/lunch examples</a> below.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-time">Same time</div>
+        <div class="step-text">Pack <span class="kid adalyn">Adalyn's</span> lunch (full prep guide below)</div>
+        <div class="step-detail"><span class="kid annabelle">Annabelle</span> packs her own lunch from last night's leftovers — and handles her own water. <span class="kid andrew">Andrew's</span> lunch is provided at Primrose — no need to pack.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-time">After lunch is packed</div>
+        <div class="step-text">Fill water bottles</div>
+        <div class="step-detail">Bottles are on the counter <strong>next to the ice machine</strong>. Adalyn = a few drops <strong>lemon-lime flavoring</strong>. Andrew = a sprinkle of <strong>watermelon</strong>.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-time">Before they leave</div>
+        <div class="step-text">Brush teeth · Adalyn brushes hair + sharpens pencils</div>
+        <div class="step-detail"><strong>Andrew's backpack:</strong> blanket, jacket, water bottle.<br><strong>Adalyn's backpack:</strong> backpack, water bottle, lunch, jacket.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-time">8:15 AM</div>
+        <div class="step-text">Leave for school with <span class="kid adalyn">Adalyn</span> + <span class="kid andrew">Andrew</span></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-time">8:25–8:40 AM</div>
+        <div class="step-text"><span class="kid adalyn">Adalyn</span> drop-off at <strong><a href="https://www.google.com/maps/search/?api=1&query=Wolf+Springs+Elementary+Bucyrus+KS" target="_blank">Wolf Springs Elementary</a></strong></div>
+        <div class="step-detail">Drop-off window is 8:25–8:40.</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-time">~8:30 AM (or earlier if possible)</div>
+        <div class="step-text"><span class="kid andrew">Andrew</span> drop-off at <strong><a href="https://www.google.com/maps/search/?api=1&query=Primrose+School+of+Blue+Valley" target="_blank">Primrose School of Blue Valley</a></strong></div>
+        <div class="step-detail">⚠️ <strong>Take Andrew INSIDE.</strong> Knock on the door if needed. Staff will check him in. Andrew shows you his classroom, then you leave.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>👖 Wednesday only — DENIM DAY at Primrose:</strong> Andrew can wear jeans if he wants (rare exception). He may opt out and stay in uniform — that's fine. <strong>Thursday: back to uniform.</strong>
+    </div>
+
+    <div class="callout" style="background:#fdf2f8; border-color:var(--adalyn);">
+      <strong style="color:var(--adalyn);">🏃 Wednesday only — PE DAY for Adalyn:</strong>
+      <ul style="margin-left: 20px; margin-top: 6px;">
+        <li>Wear <strong>tennis shoes</strong></li>
+        <li>Hair in a <strong>ponytail</strong></li>
+        <li>🧦 <strong>Help her put on her socks</strong> — she has textile sensitivities and it's totally normal for her to ask for help. Not a behavior thing.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LUNCH PREP -->
+  <div class="card morning" id="lunch">
+    <h2>🍱 Adalyn's Lunch — Full Guide</h2>
+    <p style="margin-bottom: 12px;">Lots of detail here on purpose — Adalyn's lunch is the most involved part of the morning. Expand each section.</p>
+
+    <details open>
+      <summary>🥩 Step 1 — Meat prep</summary>
+      <div class="det-body">
+        <p>The meat of choice is the <strong>smoked steak</strong> in the glass container in the fridge. <strong>Trim away the fat</strong>, slice into <strong>thin slices</strong>, microwave <strong>15 seconds</strong> (Liz uses a paper bowl), then place straight in the lunchbox.</p>
+        <div class="photo-grid">
+          <figure><img src="nanny-files/lunch-prep/meat-01-setup.jpg" alt="Setup"><figcaption>Setup — meat + fruits ready</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/meat-02-trim-fat.jpg" alt="Trim fat"><figcaption>Trim away the fat</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/meat-03-thin-slices.jpg" alt="Thin slices"><figcaption>Slice thin</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/meat-05-trimmed-vs-fat.jpg" alt="Trimmed vs fat"><figcaption>Trimmed (left) vs fat (board)</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/meat-04-on-plate.jpg" alt="On plate"><figcaption>Final — on plate</figcaption></figure>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🥭 Step 2 — Fruit (3 fruits, see notes)</summary>
+      <div class="det-body">
+        <p><strong>Pack 3 fruits:</strong> 1 large (pear OR mango) + 2 smaller (kiwi, orange, berries, etc.)</p>
+        <p style="margin-top: 8px; padding: 8px; background: #fef9c3; border-radius: 6px;"><strong>⚠️ Note:</strong> Mango + pear together can be tricky to fit. Adalyn can have both if she wants — just space-aware.</p>
+        <h3 style="margin-top: 12px;">How to cut a mango</h3>
+        <div class="photo-grid">
+          <figure><img src="nanny-files/lunch-prep/mango-01-whole.jpg" alt="Whole"><figcaption>1. Whole mango</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/mango-02-cut-side.jpg" alt="Cut side"><figcaption>2. Cut along the pit</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/mango-03-halves.jpg" alt="Halves"><figcaption>3. Two cheeks</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/mango-04-peel-strip.jpg" alt="Peel"><figcaption>4. Peel the skin off</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/mango-05-peeled.jpg" alt="Peeled"><figcaption>5. Peeled cheek</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/mango-06-sliced.jpg" alt="Sliced"><figcaption>6. Sliced wedges</figcaption></figure>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🍿 Step 3 — Snacks (1 salty + 1 sweet + 1 crunchy)</summary>
+      <div class="det-body">
+        <p>These go on the <strong>outside</strong> of the bento, packed inside the lunch sack. Adalyn can pick — her favorites:</p>
+        <ul style="margin-left: 20px; margin-top: 6px;">
+          <li><strong>Salty:</strong> Seaweed snacks</li>
+          <li><strong>Sweet:</strong> Unreal bar</li>
+          <li><strong>Crunchy:</strong> her pick of the day</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🥣 Step 4 — Pack the bento</summary>
+      <div class="det-body">
+        <p>Two example bentos to model:</p>
+        <div class="photo-grid">
+          <figure><img src="nanny-files/lunch-prep/lunchbox-01-teal-packed.jpg" alt="Teal bento"><figcaption>Teal bento — meat + 3 fruits</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/lunchbox-02-pink-packed.jpg" alt="Pink bento"><figcaption>Pink bento — same idea, different fruit mix</figcaption></figure>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🎒 Step 5 — Pack the lunch bag</summary>
+      <div class="det-body">
+        <p>Bento goes in, snacks tucked around, ice pack on top.</p>
+        <div class="photo-grid">
+          <figure><img src="nanny-files/lunch-prep/lunchbag-01-snacks-laidout.jpg" alt="Snacks laid out"><figcaption>Snacks ready</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/lunchbag-02-pre-packing.jpg" alt="Pre-packing"><figcaption>Bag + bento + ice pack</figcaption></figure>
+          <figure><img src="nanny-files/lunch-prep/lunchbag-03-fully-packed.jpg" alt="Packed"><figcaption>Fully packed</figcaption></figure>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🍳 Breakfast options</summary>
+      <div class="det-body">
+        <h3 style="margin-top: 0;">🥑 Avocado toast</h3>
+        <ul style="margin-left: 20px; margin-bottom: 12px;">
+          <li><strong>Ezekiel bread</strong> (in the fridge/freezer)</li>
+          <li>Half an avocado, mashed on top</li>
+          <li>Sprinkle of <strong>everything bagel seasoning</strong></li>
+          <li>Pinch of salt on top</li>
+        </ul>
+        <div class="photo-grid" style="margin-bottom: 14px;">
+          <figure><img src="nanny-files/lunch-prep/breakfast-avocado-toast.jpg" alt="Avocado toast"><figcaption>Final result</figcaption></figure>
+        </div>
+
+        <h3>🌾 Overnight oats</h3>
+        <p>Already made, in the fridge ready to go. Kids can eat them <strong>plain or add fruit</strong>.</p>
+
+        <h3 style="margin-top: 12px;">🍍 Other</h3>
+        <p>Sliced <strong>pineapple</strong> in the fridge — ready to go as a side or fruit add-in.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- WED SCHEDULE -->
+  <div class="card" id="wed">
+    <h2>💧 Wednesday Apr 29 — Swim Day</h2>
+    <p>Wednesday afternoon/evening is busy. <strong>Jennifer is handling pickup + swim + dinner.</strong> You'll meet kids at the house at 7 PM — OR meet at Costa Vida for dinner (Liz's treat).</p>
+
+    <div class="step">
+      <div class="step-time">3:00 PM</div>
+      <div class="step-text">Jennifer picks up all 3 kids from school</div>
+    </div>
+    <div class="step">
+      <div class="step-time">~4:05 PM</div>
+      <div class="step-text">Home — Annabelle stays for basketball, Adalyn + Andrew change into swimsuits</div>
+    </div>
+    <div class="step">
+      <div class="step-time">4:40 PM</div>
+      <div class="step-text">Jennifer leaves for Midwest Aquatics with little kids</div>
+    </div>
+    <div class="step">
+      <div class="step-time">5:00 / 5:30 PM</div>
+      <div class="step-text">Andrew swim (5:00) · Adalyn swim (5:30) at <a href="https://www.google.com/maps/search/?api=1&query=Midwest+Aquatics+Overland+Park+KS" target="_blank">Midwest Aquatics</a></div>
+    </div>
+    <div class="step">
+      <div class="step-time">~6:15 PM</div>
+      <div class="step-text">Jennifer takes Adalyn + Andrew to <strong><a href="https://www.google.com/maps/search/?api=1&query=Costa+Vida+Overland+Park+KS" target="_blank">Costa Vida</a></strong> for dinner; brings Annabelle's order back home</div>
+    </div>
+    <div class="step">
+      <div class="step-time">~7:00 PM</div>
+      <div class="step-text">Jennifer drops kids at home — you take over for bedtime</div>
+    </div>
+
+    <div class="callout">
+      <strong>Cece's Wednesday options:</strong>
+      <ol style="margin-left: 20px; margin-top: 6px;">
+        <li><strong>Meet at Costa Vida</strong> at ~6:15 PM and eat with the little kids (Liz's treat — order what you want)</li>
+        <li><strong>Stay at the house</strong> ready to receive everyone by 7 PM</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- DINNER ORDERS -->
+  <div class="card dinner" id="dinner">
+    <h2>🍽️ Dinner Orders by Night</h2>
+
+    <details open>
+      <summary>🟦 TUE Apr 28 — Cava (Meg picks up)</summary>
+      <div class="det-body">
+        <div class="order-card andrew">
+          <h4>🟧 Andrew — Kid's Meal</h4>
+          <ul>
+            <li>Pita on the side</li>
+            <li>Saffron rice</li>
+            <li>NO dips</li>
+            <li>Grilled chicken</li>
+            <li>Toppings <strong>on the side</strong>: Persian cucumber, pickles</li>
+          </ul>
+        </div>
+
+        <div class="order-card adalyn">
+          <h4>🟥 Adalyn — Build Your Own Bowl</h4>
+          <ul>
+            <li>Saffron rice</li>
+            <li>3 scoops of tzatziki</li>
+            <li>Grilled chicken</li>
+            <li>Tomato + cucumber</li>
+            <li>Add avocado</li>
+            <li><strong>NO dressing</strong></li>
+          </ul>
+        </div>
+
+        <div class="order-card annabelle">
+          <h4>🟪 Annabelle — Build Your Own Bowl</h4>
+          <ul>
+            <li>Super greens + saffron rice</li>
+            <li>3 scoops of tzatziki</li>
+            <li>Grilled chicken</li>
+            <li>Pickled onions, tomato + onion, tomato + cucumber, slaw, Persian cucumbers</li>
+            <li>Balsamic vinaigrette + dill yogurt dressings on top</li>
+          </ul>
+        </div>
+
+        <div class="order-card cece">
+          <h4>🦊 Cece — Spicy Lamb &amp; Avocado Bowl</h4>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>🟨 WED Apr 29 — Costa Vida (Jennifer takes the little kids)</summary>
+      <div class="det-body">
+        <p>Jennifer takes Adalyn + Andrew to Costa Vida after swim. She'll bring Annabelle's order home.</p>
+        <p style="margin-top: 8px;"><strong>Cece:</strong> meet them at Costa Vida ~6:15 PM (Liz's treat) or be at the house by 7 PM.</p>
+
+        <div class="order-card andrew" style="margin-top: 12px;">
+          <h4>🟧 Andrew — Kids Taco</h4>
+          <ul>
+            <li>Steak</li>
+            <li>Cheese</li>
+            <li>Sour cream</li>
+            <li><strong>Sub rice &amp; beans for chips</strong></li>
+          </ul>
+          <p style="font-size: 0.88em; color: var(--muted); margin-top: 6px;">Start with 1 taco. May need a 2nd if he's still hungry.</p>
+        </div>
+
+        <div class="order-card adalyn">
+          <h4>🟥 Adalyn — 2 Kids Tacos (à la carte for the 2nd)</h4>
+          <ul>
+            <li>Steak</li>
+            <li><strong>NO cheese</strong></li>
+            <li>Tomato</li>
+            <li>Guacamole</li>
+            <li><strong>Sub rice &amp; beans for chips</strong></li>
+          </ul>
+          <p style="font-size: 0.88em; color: var(--muted); margin-top: 6px;">She wants 2 tacos total — add a 2nd à la carte, same way as the first.</p>
+        </div>
+
+        <div class="order-card annabelle">
+          <h4>🟪 Annabelle — Regular Salad</h4>
+          <ul>
+            <li>Flour tortilla bowl</li>
+            <li>Grilled steak</li>
+            <li>Cilantro lime rice</li>
+            <li>Black beans</li>
+            <li>Pico de gallo</li>
+            <li>Guacamole</li>
+            <li><strong>NO dressing</strong></li>
+            <li><strong>NO tortilla strips</strong></li>
+          </ul>
+        </div>
+
+        <p style="font-size: 0.9em; margin-top: 10px;"><em>Jennifer brings Annabelle's order back to the house — Adalyn + Andrew eat in-restaurant. The kids love the <strong>cinnamon sugar tortilla</strong> that comes with kids meals — don't skip it.</em></p>
+        <p style="font-size: 0.9em; margin-top: 8px; padding: 8px; background: #f0fdf4; border-radius: 6px;">💳 <strong>Liz is treating</strong> Jennifer + Cece to dinner too — they can order whatever they want.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>🟧 THU Apr 30 — Chick-fil-A (Meg picks up)</summary>
+      <div class="det-body">
+        <div class="order-card" style="border-left-color: var(--rose);">
+          <h4>🍗 Family Order</h4>
+          <ul>
+            <li><strong>30-count nuggets</strong> (for the 3 kids tonight)</li>
+            <li><strong>12-count nuggets</strong> — for Annabelle to take for lunch the next day</li>
+            <li><strong>3 large waffle fries</strong></li>
+          </ul>
+        </div>
+        <p style="font-size: 0.9em; margin-top: 10px; padding: 8px; background: #f0fdf4; border-radius: 6px;">💳 <strong>Whoever's watching the kids</strong> (Meg or Cece) — order whatever you want, Liz is treating.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- EVENING + BEDTIME -->
+  <div class="card evening" id="evening">
+    <h2>🌙 Evening + Bedtime</h2>
+
+    <h3>🐠 Daily — Adalyn's responsibilities</h3>
+    <ul style="margin-left: 20px; font-size: 0.95em;">
+      <li>Feeds the fish in the morning + evening</li>
+      <li>Turns the fish tank light <strong>ON in the morning</strong>, <strong>OFF before bed</strong></li>
+    </ul>
+
+    <h3>🛁 Bedtime routine</h3>
+    <div class="step">
+      <div class="step-time">After dinner</div>
+      <div class="step-text">Showers + brush teeth</div>
+    </div>
+    <div class="step">
+      <div class="step-time">Tuck-in</div>
+      <div class="step-text">Read a book + sing songs</div>
+      <div class="step-detail">Annabelle <em>may</em> want to help with bedtime for the little kids — give her the option, no pressure.</div>
+    </div>
+    <div class="step">
+      <div class="step-time">8:30 PM</div>
+      <div class="step-text">Bedtime for <span class="kid adalyn">Adalyn</span> + <span class="kid andrew">Andrew</span></div>
+    </div>
+    <div class="step">
+      <div class="step-time">10:00 PM (or earlier)</div>
+      <div class="step-text">Bedtime for <span class="kid annabelle">Annabelle</span></div>
+      <div class="step-detail">She may go to bed sooner on her own.</div>
+    </div>
+  </div>
+
+  <!-- HOUSE INFO -->
+  <div class="card house" id="house">
+    <h2>🏠 House Info</h2>
+
+    <div class="info-row"><span class="lbl">📍 Address</span><span class="val"><a href="https://maps.apple.com/?q=17136+Barton+Street" target="_blank">17136 Barton Street</a></span></div>
+    <div class="info-row"><span class="lbl">🚪 Garage codes</span><span class="val">Cece + Jennifer each have their own unique codes — should be working</span></div>
+    <div class="info-row"><span class="lbl">🚨 Alarm</span><span class="val">No alarm code — not used</span></div>
+    <div class="info-row"><span class="lbl">📡 Wi-Fi</span><span class="val" style="font-style: italic; color: var(--muted);">Liz to confirm with Bobby</span></div>
+    <div class="info-row"><span class="lbl">🧹 Cleaning</span><span class="val">Rosita comes <strong>Thursday</strong> — Meg handles payment</span></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="card medical" id="contacts">
+    <h2>📞 Emergency Contacts &amp; Activities</h2>
+    <p>All emergency contacts, doctor info, and activity details are in the <strong>LA Trip Kid Coverage dashboard</strong> — same info, already organized.</p>
+    <a href="la-trip-kids.html" target="_blank" class="btn-link">📋 Open Kid Coverage Dashboard</a>
+
+    <div class="callout" style="margin-top: 14px;">
+      <strong>🩸 Adalyn nosebleeds — quick reference:</strong>
+      <ol style="margin-left: 20px; margin-top: 6px;">
+        <li>Sit her <strong>upright</strong>, lean <strong>slightly forward</strong> (NOT back)</li>
+        <li>Pinch the soft part of the nose for <strong>10 full minutes</strong> — no peeking</li>
+        <li>Cold compress on neck/forehead helps</li>
+        <li>After: no nose blowing, picking, or hard sneezing for a few hours</li>
+      </ol>
+      <p style="margin-top: 8px; padding: 8px; background: white; border-radius: 6px; border-left: 3px solid #c0524a;">💧 <strong>Blood clotting strips</strong> on the bathroom counter in Liz's bedroom. Insert into the nostril and pinch to help with clotting — useful if pressure alone isn't stopping the bleed.</p>
+      <p style="margin-top: 8px; padding: 8px; background: white; border-radius: 6px; border-left: 3px solid var(--plum);">💊 <strong>Other kid meds</strong> (Tylenol, ibuprofen, allergy meds) are on the same bathroom counter in Liz's bedroom.</p>
+      <p style="margin-top: 8px;"><strong>Call Dr. Vannaman if:</strong> bleeding hasn't stopped <em>or slowed down</em> after 20 minutes (if it's slowing it may take longer than 20 min, but it should be visibly getting under control by then), she's pale or dizzy, or it happened from a head injury.</p>
+    </div>
+  </div>
+
+  <footer>
+    💝 Thank you for taking such good care of our kids · made with love by Liz<br>
+    <small style="opacity: 0.6;">Last updated: Tue Apr 28, 2026</small>
+  </footer>
+
+</div>
+
+<script>
+  // Photo lightbox-lite (just open in new tab on tap)
+  document.querySelectorAll('.photo-grid img').forEach(img => {
+    img.addEventListener('click', () => window.open(img.src, '_blank'));
+  });
+</script>
+</body>
+</html>
