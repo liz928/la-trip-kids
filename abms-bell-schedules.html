@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔔 ABMS Bell Schedules</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --rail: #e6e0d2;
+    --g8: #6366f1;
+    --g8-bg: #eef2ff;
+    --g7: #ec4899;
+    --g7-bg: #fce7f3;
+    --g6: #10b981;
+    --g6-bg: #d1fae5;
+    --lunch: #f59e0b;
+    --lunch-bg: #fef3c7;
+    --flex: #8b5cf6;
+    --flex-bg: #ede9fe;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 16px;
+    line-height: 1.45;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(99,102,241,0.2);
+  }
+  h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.7em;
+    font-weight: 900;
+  }
+  .subtitle { opacity: 0.92; font-size: 0.95em; margin-top: 2px; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .chip {
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 0.84em;
+    font-weight: 700;
+  }
+  .chip-8 { background: var(--g8-bg); color: var(--g8); }
+  .chip-7 { background: var(--g7-bg); color: var(--g7); }
+  .chip-6 { background: var(--g6-bg); color: var(--g6); }
+  .chip-l { background: var(--lunch-bg); color: #92400e; }
+  .chip-f { background: var(--flex-bg); color: #5b21b6; }
+
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Grade tables */
+  table.sched {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  table.sched th {
+    background: var(--rail);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.86em;
+    color: #4a4a4a;
+  }
+  table.sched td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #f0ece2;
+    font-variant-numeric: tabular-nums;
+  }
+  table.sched tr:last-child td { border-bottom: none; }
+  td.period { font-weight: 700; color: var(--muted); width: 50px; }
+  td.time { font-family: 'JetBrains Mono', monospace; font-weight: 600; width: 130px; white-space: nowrap; }
+  td.class { color: #2a2a2a; }
+  tr.lunch-row { background: var(--lunch-bg); }
+  tr.lunch-row td { font-weight: 700; }
+  tr.flex-row { background: var(--flex-bg); }
+  tr.flex-row td.class { color: #5b21b6; font-weight: 700; }
+
+  /* Master timeline */
+  .timeline {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 12px 0;
+  }
+  .timeline h3 {
+    color: #92400e;
+    font-family: 'Nunito', sans-serif;
+    margin-bottom: 10px;
+  }
+  .tl-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px dashed #e5b87f;
+    font-size: 0.92em;
+  }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-time {
+    font-family: monospace;
+    font-weight: 700;
+    color: #92400e;
+    min-width: 130px;
+  }
+  .tl-label {
+    flex: 1;
+  }
+  .tl-badge {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 0.78em;
+    font-weight: 700;
+  }
+  .b-8 { background: var(--g8); color: white; }
+  .b-7 { background: var(--g7); color: white; }
+  .b-6 { background: var(--g6); color: white; }
+
+  .grades-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 900px) {
+    .grades-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .grade-card { padding: 0; overflow: hidden; }
+  .grade-card .grade-header {
+    padding: 12px 16px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 1.02em;
+  }
+  .grade-card.g8 .grade-header { background: var(--g8); }
+  .grade-card.g7 .grade-header { background: var(--g7); }
+  .grade-card.g6 .grade-header { background: var(--g6); }
+  .grade-card .grade-body { padding: 4px 0; }
+  .grade-card table.sched {
+    border-collapse: collapse;
+  }
+  .grade-card table.sched th { display: none; }
+  .grade-card table.sched td { padding: 5px 12px; font-size: 0.85em; }
+
+  .windows-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .window {
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 4px solid;
+  }
+  .window.lunch { background: var(--lunch-bg); border-left-color: var(--lunch); }
+  .window.flex { background: var(--flex-bg); border-left-color: var(--flex); }
+  .window-time {
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 1em;
+  }
+  .window-label {
+    font-weight: 600;
+    margin-top: 2px;
+    font-size: 0.92em;
+  }
+  .window-detail {
+    font-size: 0.82em;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🔔 ABMS Bell Schedules</h1>
+    <div class="subtitle">2025-26 · For PTO Staff Appreciation Week massage planning</div>
+  </header>
+
+  <div class="legend">
+    <span class="chip chip-8">8th Grade</span>
+    <span class="chip chip-7">7th Grade</span>
+    <span class="chip chip-6">6th Grade</span>
+    <span class="chip chip-l">🍽️ Lunch shift</span>
+    <span class="chip chip-f">⭐ Flex period</span>
+  </div>
+
+  <!-- 3-grade side-by-side -->
+  <div class="grades-grid">
+
+    <!-- 8th -->
+    <div class="card grade-card g8">
+      <div class="grade-header">8th Grade · 1st Lunch</div>
+      <div class="grade-body">
+        <table class="sched">
+          <tr><td class="period">P1</td><td class="time">7:51-8:44</td><td class="class">Core 1</td></tr>
+          <tr><td class="period">P2</td><td class="time">8:48-9:40</td><td class="class">Core 2</td></tr>
+          <tr class="flex-row"><td class="period">P3</td><td class="time">9:44-10:11</td><td class="class">⭐ Flex (27 min)</td></tr>
+          <tr><td class="period">P4</td><td class="time">10:15-11:08</td><td class="class">Core 3</td></tr>
+          <tr class="lunch-row"><td class="period">P5</td><td class="time">11:13-11:38</td><td class="class">🍽️ Lunch (25 min)</td></tr>
+          <tr><td class="period">P6</td><td class="time">11:42-12:36</td><td class="class">Core 4</td></tr>
+          <tr><td class="period">P7</td><td class="time">12:40-1:24</td><td class="class">Explo 1</td></tr>
+          <tr><td class="period">P8</td><td class="time">1:28-2:12</td><td class="class">Explo 2</td></tr>
+          <tr><td class="period">P9</td><td class="time">2:16-3:00</td><td class="class">Explo 3</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 7th -->
+    <div class="card grade-card g7">
+      <div class="grade-header">7th Grade · 2nd Lunch</div>
+      <div class="grade-body">
+        <table class="sched">
+          <tr><td class="period">P1</td><td class="time">7:51-8:35</td><td class="class">Core 1</td></tr>
+          <tr><td class="period">P2</td><td class="time">8:39-9:23</td><td class="class">Core 2</td></tr>
+          <tr><td class="period">P3</td><td class="time">9:27-10:11</td><td class="class">Explo 1</td></tr>
+          <tr><td class="period">P4</td><td class="time">10:15-11:07</td><td class="class">Core 3</td></tr>
+          <tr><td class="period">P5</td><td class="time">11:11-12:03</td><td class="class">Core 4</td></tr>
+          <tr class="lunch-row"><td class="period">P6</td><td class="time">12:07-12:32</td><td class="class">🍽️ Lunch (25 min)</td></tr>
+          <tr class="flex-row"><td class="period">P7</td><td class="time">12:36-1:05</td><td class="class">⭐ Flex (29 min)</td></tr>
+          <tr><td class="period">P8</td><td class="time">1:09-2:03</td><td class="class">Explo 2</td></tr>
+          <tr><td class="period">P9</td><td class="time">2:07-3:00</td><td class="class">Explo 3</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6th -->
+    <div class="card grade-card g6">
+      <div class="grade-header">6th Grade · 3rd Lunch</div>
+      <div class="grade-body">
+        <table class="sched">
+          <tr><td class="period">P1</td><td class="time">7:51-8:44</td><td class="class">Core 1</td></tr>
+          <tr class="flex-row"><td class="period">P2</td><td class="time">8:48-9:40</td><td class="class">⭐ Flex (52 min)</td></tr>
+          <tr><td class="period">P3</td><td class="time">9:44-10:11</td><td class="class">Core 2</td></tr>
+          <tr><td class="period">P4</td><td class="time">10:15-11:08</td><td class="class">Core 3</td></tr>
+          <tr><td class="period">P5</td><td class="time">11:13-11:38</td><td class="class">Explo 1</td></tr>
+          <tr><td class="period">P6</td><td class="time">11:42-12:36</td><td class="class">Explo 2</td></tr>
+          <tr class="lunch-row"><td class="period">P7</td><td class="time">12:40-1:24</td><td class="class">🍽️ Lunch (44 min)</td></tr>
+          <tr><td class="period">P8</td><td class="time">1:28-2:12</td><td class="class">Core 4</td></tr>
+          <tr><td class="period">P9</td><td class="time">2:16-3:00</td><td class="class">Explo 3</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Master timeline -->
+  <div class="card">
+    <h2>🌊 Lunch Wave (when teachers are free)</h2>
+    <div class="timeline">
+      <h3>11:13 AM - 1:24 PM · Continuous staff availability</h3>
+      <div class="tl-row">
+        <span class="tl-time">11:13-11:38</span>
+        <span class="tl-label">8th grade lunch</span>
+        <span class="tl-badge b-8">25 min</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-time">11:38-12:07</span>
+        <span class="tl-label"><em>gap window — between lunches</em></span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-time">12:07-12:32</span>
+        <span class="tl-label">7th grade lunch</span>
+        <span class="tl-badge b-7">25 min</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-time">12:32-12:40</span>
+        <span class="tl-label"><em>gap window</em></span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-time">12:40-1:24</span>
+        <span class="tl-label">6th grade lunch</span>
+        <span class="tl-badge b-6">44 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Massage windows -->
+  <div class="card">
+    <h2>💆 Best Massage Windows (teachers most free)</h2>
+    <div class="windows-grid">
+      <div class="window flex">
+        <div class="window-time">8:48-9:40</div>
+        <div class="window-label">6th Grade Flex</div>
+        <div class="window-detail">52 min · 6th flex/specials teachers free</div>
+      </div>
+      <div class="window flex">
+        <div class="window-time">9:44-10:11</div>
+        <div class="window-label">8th Grade Flex</div>
+        <div class="window-detail">27 min · 8th flex/specials teachers free</div>
+      </div>
+      <div class="window lunch">
+        <div class="window-time">11:13-11:38</div>
+        <div class="window-label">8th Grade Lunch</div>
+        <div class="window-detail">25 min · 8th grade core teachers free</div>
+      </div>
+      <div class="window lunch">
+        <div class="window-time">12:07-12:32</div>
+        <div class="window-label">7th Grade Lunch</div>
+        <div class="window-detail">25 min · 7th grade core teachers free</div>
+      </div>
+      <div class="window flex">
+        <div class="window-time">12:36-1:05</div>
+        <div class="window-label">7th Grade Flex</div>
+        <div class="window-detail">29 min · 7th flex/specials teachers free</div>
+      </div>
+      <div class="window lunch">
+        <div class="window-time">12:40-1:24</div>
+        <div class="window-label">6th Grade Lunch</div>
+        <div class="window-detail">44 min · 6th grade core teachers free</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background: #fef3c7; border-left: 4px solid #f59e0b;">
+    <h2 style="color: #92400e;">📌 Key Notes</h2>
+    <ul style="margin-left: 20px; font-size: 0.94em; line-height: 1.6;">
+      <li><strong>School day:</strong> 7:51 AM - 3:00 PM</li>
+      <li><strong>Lunch wave:</strong> 11:13 AM - 1:24 PM (continuous teacher availability across grades)</li>
+      <li><strong>Best massage windows:</strong> 6 windows totaling ~3.5 hours of high-coverage time</li>
+      <li><strong>"Core" classes:</strong> Math, ELA, Social Studies, Science (4 cores per grade)</li>
+      <li><strong>"Explo" classes:</strong> Specials/electives (PE, music, art, world languages, etc.)</li>
+      <li><strong>Each grade has its own period times</strong> — 7th grade has slightly different times than 6th/8th, but they all start 7:51 and end 3:00</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
