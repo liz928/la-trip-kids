@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌿 PTO Massage Signup - Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --rail: #e6e0d2;
+    --accent: #8b5cf6;
+    --accent-bg: #ede9fe;
+    --g7: #ec4899;
+    --g6: #10b981;
+    --g8: #6366f1;
+    --warm: #f59e0b;
+    --warm-bg: #fef3c7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 14px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    color: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 18px rgba(139,92,246,0.25);
+  }
+  h1 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5em;
+    font-weight: 900;
+  }
+  .subtitle { opacity: 0.95; font-size: 0.92em; margin-top: 4px; }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+  h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.98em;
+    margin: 10px 0 6px;
+    color: #4a4a4a;
+  }
+
+  .download {
+    display: block;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 700;
+    margin: 8px 0;
+    box-shadow: 0 3px 10px rgba(139,92,246,0.25);
+  }
+  .download:active { transform: scale(0.98); }
+  .download-2 { background: #6366f1; }
+  .download-3 { background: #ec4899; }
+
+  pre.copy-block {
+    background: var(--rail);
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.4;
+    border: 1px solid #d8d2c2;
+    margin: 8px 0;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .copy-btn {
+    background: #4a4a4a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.82em;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .copy-btn:active { background: #2a2a2a; }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.92em;
+  }
+  .step-num {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85em;
+  }
+  .step-text { flex: 1; }
+  .step-text strong { color: var(--accent); }
+
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  table.summary td {
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--rail);
+  }
+  table.summary tr:last-child td { border-bottom: none; }
+  table.summary td:first-child { font-weight: 600; }
+  table.summary td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .priority-window {
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 6px 0;
+    font-size: 0.92em;
+  }
+  .pw-7 { background: #fce7f3; border-left: 4px solid var(--g7); }
+  .pw-6 { background: #d1fae5; border-left: 4px solid var(--g6); }
+  .pw-8 { background: #eef2ff; border-left: 4px solid var(--g8); }
+  .pw-time { font-weight: 700; font-family: monospace; }
+
+  .links { display: flex; gap: 8px; flex-wrap: wrap; }
+  .link-pill {
+    background: var(--accent-bg);
+    color: var(--accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 14px;
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>🌿 PTO Massage Signup</h1>
+    <div class="subtitle">ABMS Staff Spa Week 2026 · Setup pack</div>
+  </header>
+
+  <!-- Quick stats -->
+  <div class="card">
+    <h2>📊 At a Glance</h2>
+    <table class="summary">
+      <tr><td>Days</td><td>Thu May 7 + Fri May 8</td></tr>
+      <tr><td>Therapists</td><td>2 per day</td></tr>
+      <tr><td>Slot length</td><td>10 min + 2 min transition</td></tr>
+      <tr><td>Hours</td><td>8 AM - 3 PM</td></tr>
+      <tr><td>Total slots</td><td>114 (57/day)</td></tr>
+      <tr><td>Staff size</td><td>~110</td></tr>
+      <tr><td>Buffer</td><td>+4 slots</td></tr>
+    </table>
+  </div>
+
+  <!-- Priority Windows -->
+  <div class="card">
+    <h2>⭐ Priority Windows</h2>
+    <p style="font-size:0.88em; color:var(--muted); margin-bottom:8px;">Core teachers should book within their grade's window when their kids are in Explo.</p>
+    <div class="priority-window pw-7">
+      <div class="pw-time">8:00-10:05 AM</div>
+      <div>7th grade core teachers</div>
+    </div>
+    <div class="priority-window pw-6">
+      <div class="pw-time">10:20 AM-12:30 PM</div>
+      <div>6th grade core teachers</div>
+    </div>
+    <div class="priority-window pw-8">
+      <div class="pw-time">12:40-3:00 PM</div>
+      <div>8th grade core teachers</div>
+    </div>
+  </div>
+
+  <!-- Downloads -->
+  <div class="card">
+    <h2>📥 Download Files</h2>
+    <p style="font-size:0.88em; color:var(--muted); margin-bottom:6px;">Send to whoever has the PTO SignUpGenius login:</p>
+    <a href="setup-guide.md" class="download" download>📄 Setup Guide (markdown)</a>
+    <a href="massage-slots.csv" class="download download-2" download>📊 Slot CSV (114 slots)</a>
+    <a href="../abms-bell-schedules.html" class="download download-3">🔔 Bell Schedule Reference</a>
+  </div>
+
+  <!-- Setup steps -->
+  <div class="card">
+    <h2>🚀 How to Set Up SignUpGenius</h2>
+    <div class="step">
+      <span class="step-num">1</span>
+      <span class="step-text">Log in to PTO's <strong>SignUpGenius</strong> account</span>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <span class="step-text">Click <strong>"Create a Sign Up"</strong></span>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <span class="step-text">Title: <strong>"ABMS Staff Spa Week 2026 — Chair Massages 🌿"</strong></span>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <span class="step-text">Paste the <strong>description</strong> from below ⬇️</span>
+    </div>
+    <div class="step">
+      <span class="step-num">5</span>
+      <span class="step-text">When you reach <strong>Slots / Schedule</strong>, look for <strong>"Bulk Add Slots"</strong> or <strong>"Import from CSV"</strong></span>
+    </div>
+    <div class="step">
+      <span class="step-num">6</span>
+      <span class="step-text">Upload <strong>massage-slots.csv</strong> (download above)</span>
+    </div>
+    <div class="step">
+      <span class="step-num">7</span>
+      <span class="step-text">Set: <strong>1 person per slot</strong>, <strong>1 slot per person</strong>, allow self-removal, send reminders</span>
+    </div>
+    <div class="step">
+      <span class="step-num">8</span>
+      <span class="step-text">Publish → grab the <strong>public sign-up URL</strong> → share with staff</span>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="card">
+    <h2>📝 Description (paste this)</h2>
+    <button class="copy-btn" onclick="copyDesc()">📋 Copy to clipboard</button>
+    <pre class="copy-block" id="desc">🌿 ABMS Staff Appreciation Spa Week — Chair Massages 🌿
+
+Welcome to the spa! Free 10-minute chair massages in the staff lounge, courtesy of the ABMS PTO. Two licensed massage therapists on-site each day to help you relax and recharge.
+
+📅 Thursday, May 7 + Friday, May 8
+📍 Staff Lounge
+⏰ Slots run 8:00 AM - 3:00 PM each day
+💆 10-minute massage + 2-minute transition between
+
+⭐ PRIORITY WINDOWS — please book during your grade's slot if you can:
+
+  • 7TH GRADE CORE TEACHERS: 8:00-10:05 AM (your students in Explo)
+  • 6TH GRADE CORE TEACHERS: 10:20 AM-12:30 PM (your students in Explo)
+  • 8TH GRADE CORE TEACHERS: 12:40-3:00 PM (your students in Explo)
+
+  Specials, paras, admin, and counselors: please grab any open slot outside the priority windows for your matching grade if possible, to make sure core teachers can book during their plan period.
+
+Sign up rules:
+• One slot per person, please
+• Walk-ins welcome if slots are open day-of
+• If you can't make your slot, please remove yourself
+
+Questions? Liz Zhou - liz@zhoufamily.com
+
+Enjoy! 💕</pre>
+  </div>
+
+  <!-- Therapist breaks -->
+  <div class="card">
+    <h2>☕ Therapist Break Schedule</h2>
+    <h3>Therapist A</h3>
+    <ul style="margin-left: 18px; font-size: 0.9em; line-height: 1.5;">
+      <li>10:05-10:20 AM (between windows)</li>
+      <li>11:12-11:32 AM (lunch)</li>
+      <li>2:00-2:15 PM (afternoon break)</li>
+    </ul>
+    <h3>Therapist B</h3>
+    <ul style="margin-left: 18px; font-size: 0.9em; line-height: 1.5;">
+      <li>10:05-10:20 AM (same natural break)</li>
+      <li>12:10-12:30 PM (lunch staggered)</li>
+      <li>2:15-2:30 PM (afternoon break)</li>
+    </ul>
+    <p style="font-size:0.85em; color:var(--muted); margin-top:8px;"><em>Continuous coverage during all 3 priority windows.</em></p>
+  </div>
+
+</div>
+
+<script>
+function copyDesc() {
+  const text = document.getElementById('desc').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    event.target.textContent = '✅ Copied!';
+    setTimeout(() => event.target.textContent = '📋 Copy to clipboard', 2000);
+  });
+}
+</script>
+</body>
+</html>
